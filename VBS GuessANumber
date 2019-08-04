@@ -1,0 +1,70 @@
+'*************************************************************************
+'Script Name: GuessANumber.vbs
+'Author: Chris Burrows
+'Created: 10/12/17
+'Description: This script plays a number-guessing game with the user
+'*************************************************************************
+
+'Initialization Section
+
+Option Explicit
+
+Const cGreetingMsg = "Pick a number between 1 - 100"
+
+Dim intUserNumber, intRandomNo, strOkToEnd, intNoGuesses
+
+intNoGuesses = 0
+
+'Main Processing Section
+
+'Generate a random number
+Randomize
+intRandomNo = FormatNumber(Int((100 * Rnd) + 1))
+  
+'Loop until either the user guesses correctly or the user clicks on Cancel
+Do Until strOkToEnd = "yes"
+
+  'Prompt user to pick a number
+  intUserNumber = InputBox("Type your guess:",cGreetingMsg)
+  intNoGuesses = intNoGuesses + 1
+  
+  'See if the user provided an answer
+  If Len(intUserNumber) <> 0 Then
+        
+    'Make sure that the player typed a number
+    If IsNumeric(intUserNumber) = True Then
+
+      'Test to see if the user's guess was correct
+      If FormatNumber(intUserNumber) = intRandomNo Then
+        MsgBox "Congratulations! You guessed it. The number was " & _
+          intUserNumber & "." & vbCrLf & vbCrLf & "You guessed it " & _
+          "in " & intNoGuesses & " guesses.", ,cGreetingMsg
+        strOkToEnd = "yes"
+      End If
+    
+      'Test to see if the user's guess was too low
+      If FormatNumber(intUserNumber) < intRandomNo Then 
+        MsgBox "Your guess was too low. Try again", ,cGreetingMsg
+        strOkToEnd = "no"
+      End If
+
+      'Test to see if the user's guess was too high
+      If FormatNumber(intUserNumber) > intRandomNo Then
+        MsgBox "Your guess was too high. Try again", ,cGreetingMsg
+        strOkToEnd = "no"
+      End If      
+      
+    Else
+      MsgBox "Sorry. You did not enter a number. Try again.", , cGreetingMsg
+    End If
+
+  Else
+    MsgBox "You either failed to type a value or you clicked on Cancel. " & _
+      "Please play again soon!", , cGreetingMsg
+    strOkToEnd = "yes"
+  End If
+  
+Loop
+
+
+
